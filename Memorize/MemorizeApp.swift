@@ -9,11 +9,14 @@ import SwiftUI
 
 @main
 struct MemorizeApp: App {
+
+    @StateObject var game = EmojiMemorizeGame()
+
     // Every App needs a body.
     // The body returns some Scene (场景) which could be one or multiple windows.
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EmojiMemorizeGameView(viewModel: game)
         }
     }
 }

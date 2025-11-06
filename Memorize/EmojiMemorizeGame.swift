@@ -6,8 +6,33 @@
 //
 
 import SwiftUI
+import Combine
 
-class EmojiMemorizeGame {
+private let emojis: [String] = [
+    "👻", "🎃", "🕷️", "😈", "🙈", "🎶", "🤡", "👹", "💄", "🐝", "🏀", "🏆",
+]
 
-    var model: MemorizeGame<String>
+private func createCardContent(index: Int) -> String {
+    emojis[index]
+}
+
+class EmojiMemorizeGame: ObservableObject {
+
+    @Published private var model = MemorizeGame<String>(
+        numberOfPairsOfCards: 6,
+        cardContentFactory: createCardContent
+    )
+
+    var cards: [MemorizeGame<String>.Card] {
+        model.cards
+    }
+
+    // MARK: - Intents
+    func shuffle() {
+        model.shuffle()
+    }
+
+    func choose(card: MemorizeGame<String>.Card) {
+        model.choose(card: card)
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  EmojiMemorizeGameView.swift
 //  Memorize
 //
 //  Created by Qi Han on 11/1/25.
@@ -7,15 +7,18 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct EmojiMemorizeGameView: View {
 
-    private let emojis: [String] = [
-        "👻", "🎃", "🕷️", "😈", "🙈", "🎶", "🤡", "👹", "💄", "🐝", "🏀", "🏆",
-    ]
+    @ObservedObject var viewModel: EmojiMemorizeGame
 
     var body: some View {
-        ScrollView {
-            cards
+        VStack {
+            ScrollView {
+                cards
+            }
+            Button("Shuffle") {
+                viewModel.shuffle()
+            }
         }
         .padding()
     }
@@ -24,8 +27,8 @@ struct ContentView: View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85, maximum: 180))]) {
             // Like Java lambda expression
             // symbol -> {xxxx};
-            ForEach(0..<emojis.count, id: \.self) { index in
-                CardView(content: emojis[index])
+            ForEach(0..<viewModel.cards.count, id: \.self) { index in
+                CardView(card: viewModel.cards[index])
                     // fit: 完整显示，不裁切
                     .aspectRatio(2 / 3, contentMode: ContentMode.fit)
             }
@@ -35,39 +38,34 @@ struct ContentView: View {
 
 struct CardView: View {
 
-    @State private var isFaceUp: Bool
-    private let baseRoundedRectangle: RoundedRectangle
-    private let content: String
+    var card: MemorizeGame<String>.Card
 
-    init(isFaceUp: Bool = true, content: String) {
-        self.isFaceUp = isFaceUp
-        self.baseRoundedRectangle = RoundedRectangle(cornerRadius: 12)
-        self.content = content
+    init(card: MemorizeGame<String>.Card) {
+        self.card = card
     }
 
     var body: some View {
         ZStack {
+            let baseRoundedRectangle = RoundedRectangle(cornerRadius: 12)
             Group {
                 baseRoundedRectangle
                     .foregroundStyle(Color.white)
                 baseRoundedRectangle
                     .strokeBorder(style: StrokeStyle(lineWidth: 2))
                     .foregroundStyle(Color.orange)
-                Text(content)
-                    .font(Font.largeTitle)
+                Text(card.content)
+                    .font(Font.system(size: 50))
             }
             // 1 means visible, 0 means transparent.
-            .opacity(isFaceUp ? 1 : 0)
+            .opacity(card.isFaceUp ? 1 : 0)
 
             baseRoundedRectangle
                 .foregroundStyle(Color.orange)
-                .opacity(isFaceUp ? 0 : 1)
-        }.onTapGesture {
-            isFaceUp.toggle()
+                .opacity(card.isFaceUp ? 0 : 1)
         }
     }
 }
 
 #Preview {
-    ContentView()
+    EmojiMemorizeGameView(viewModel: EmojiMemorizeGame())
 }
