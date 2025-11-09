@@ -15,6 +15,7 @@ struct EmojiMemorizeGameView: View {
         VStack {
             ScrollView {
                 cards
+                    .animation(Animation.default, value: viewModel.cards)
             }
             Button("Shuffle") {
                 viewModel.shuffle()
@@ -27,10 +28,14 @@ struct EmojiMemorizeGameView: View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85, maximum: 180))]) {
             // Like Java lambda expression
             // symbol -> {xxxx};
-            ForEach(0..<viewModel.cards.count, id: \.self) { index in
-                CardView(card: viewModel.cards[index])
+            ForEach(viewModel.cards) { card in
+                CardView(card: card)
                     // fit: 完整显示，不裁切
                     .aspectRatio(2 / 3, contentMode: ContentMode.fit)
+                    .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card: card)
+                    }
             }
         }
     }
