@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct CardModel: CustomDebugStringConvertible, Identifiable {
+struct CardModel: CustomDebugStringConvertible, Identifiable, Equatable {
 
     var id: String
 
-    var isFaceUp: Bool = false
+    // TODO: Change it to false by default.
+    var isFaceUp: Bool = true
     var isMatched: Bool = false
     let content: String
 

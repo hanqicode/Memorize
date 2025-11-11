@@ -9,7 +9,11 @@ import SwiftUI
 
 struct EmojiMemoizeGameView: View {
 
-    let viewModel: GameViewModel
+    private let viewModel: GameViewModel
+
+    init(viewModel: GameViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack {
@@ -26,13 +30,39 @@ struct EmojiMemoizeGameView: View {
         .padding()
     }
 
-    private var titleSection: Text {
-        Text("Memorize!")
-            .font(Font.system(size: 30))
+    private var titleSection: some View {
+        VStack {
+            Text("Memorize!")
+                .font(Font.system(size: 30))
+            HStack {
+                Text(viewModel.getThemeName())
+                    .foregroundStyle(viewModel.getThemeColor())
+
+                Spacer()
+
+                Text("Score:")
+                    .foregroundStyle(viewModel.getThemeColor())
+            }
+            .padding()
+        }
     }
 
     private var cardsSection: some View {
-        Text("Cards Section")
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 85))]) {
+                ForEach(viewModel.getCards(), id: \.id) { cardModel in
+                    CardView(
+                        cardModel: cardModel,
+                        themeColor: viewModel.getThemeColor()
+                    )
+                    .aspectRatio(2 / 3, contentMode: ContentMode.fit)
+                    .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card: cardModel)
+                    }
+                }
+            }
+        }
     }
 
     private var newGameButton: some View {
