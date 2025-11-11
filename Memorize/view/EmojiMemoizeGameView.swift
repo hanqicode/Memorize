@@ -34,17 +34,17 @@ struct EmojiMemoizeGameView: View {
         VStack {
             Text("Memorize!")
                 .font(Font.system(size: 30))
+
             HStack {
                 Text(viewModel.getThemeName())
-                    .foregroundStyle(viewModel.getThemeColor())
 
                 Spacer()
 
                 Text("Score:")
-                    .foregroundStyle(viewModel.getThemeColor())
             }
             .padding()
         }
+        .foregroundStyle(viewModel.getThemeColor())
     }
 
     private var cardsSection: some View {
@@ -69,6 +69,7 @@ struct EmojiMemoizeGameView: View {
         Button("New Game") {
             viewModel.newGame()
         }
+        .foregroundStyle(viewModel.getThemeColor())
     }
 }
 
