@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import Combine
 
-class GameViewModel {
+class GameViewModel: ObservableObject {
 
-    private var gameModel: GameModel
-    private let currentThemeModel: ThemeModel
+    @Published private var gameModel: GameModel
+    private var currentThemeModel: ThemeModel
     private let allThemeModels: [ThemeModel]
 
     init() {
         allThemeModels = ThemeLibrary.all
-//        currentThemeModel = allThemeModels.randomElement()!
-        currentThemeModel = allThemeModels[0]
+        currentThemeModel = allThemeModels.randomElement()!
+//        currentThemeModel = allThemeModels[0]
         gameModel = GameModel(themeModel: currentThemeModel)
     }
 
@@ -39,6 +40,12 @@ class GameViewModel {
         default:
             return Color.blue
         }
+    }
+
+    func newGame() {
+        currentThemeModel = allThemeModels.randomElement()!
+        gameModel = GameModel(themeModel: currentThemeModel)
+        print("New game started with theme: \(currentThemeModel.name)")
     }
 
     func choose(card: CardModel) {

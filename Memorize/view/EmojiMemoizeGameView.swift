@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EmojiMemoizeGameView: View {
 
-    private let viewModel: GameViewModel
+    @ObservedObject private var viewModel: GameViewModel
 
     init(viewModel: GameViewModel) {
         self.viewModel = viewModel
@@ -67,7 +67,7 @@ struct EmojiMemoizeGameView: View {
 
     private var newGameButton: some View {
         Button("New Game") {
-            // TODO: Adds new game logic here.
+            viewModel.newGame()
         }
     }
 }
