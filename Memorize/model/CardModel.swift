@@ -11,8 +11,7 @@ struct CardModel: CustomDebugStringConvertible, Identifiable, Equatable {
 
     var id: String
 
-    // TODO: Change it to false by default.
-    var isFaceUp: Bool = true
+    var isFaceUp: Bool = false
     var isMatched: Bool = false
     let content: String
 

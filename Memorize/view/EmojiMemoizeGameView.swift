@@ -40,7 +40,7 @@ struct EmojiMemoizeGameView: View {
 
                 Spacer()
 
-                Text("Score:")
+                Text("Score: \(viewModel.getScore())")
             }
             .padding()
         }
@@ -62,6 +62,7 @@ struct EmojiMemoizeGameView: View {
                     }
                 }
             }
+            .animation(Animation.default, value: viewModel.getCards())
         }
     }
 

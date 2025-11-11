@@ -10,9 +10,14 @@ import Foundation
 struct GameModel {
 
     private(set) var cards: [CardModel]
+    private var visitedCardIndexes: Set<Int>
+    private var indexOfTheOneAndOnlyFaceUpCard: Int?
+    private var score: Int
 
     init(themeModel: ThemeModel) {
         cards = []
+        visitedCardIndexes = []
+        score = 0
 
         // Builds the cards array.
         for index in 0..<themeModel.emojis.count {
@@ -28,16 +33,63 @@ struct GameModel {
 
     // CardModel is struct type so we cannot modify card directly.
     mutating func choose(card: CardModel) {
-        print("Choosing card with id: \(card.id)")
         let chosenIndex = self.index(card: card)
-        cards[chosenIndex].isFaceUp.toggle()
+
+        if (!canBeChosen(card: card)) {
+            return
+        }
+
+        cards[chosenIndex].isFaceUp = true
+
+        // If there's no card faced up.
+        if (indexOfTheOneAndOnlyFaceUpCard == nil) {
+            indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+            return
+        }
+
+        // There's a card faced up.
+        let facedUpIndex = indexOfTheOneAndOnlyFaceUpCard!
+
+        // If it's a match.
+        if (cards[chosenIndex].content == cards[facedUpIndex].content) {
+            cards[chosenIndex].isMatched = true
+            cards[facedUpIndex].isMatched = true
+            indexOfTheOneAndOnlyFaceUpCard = nil
+            score += 2
+            visitedCardIndexes.insert(chosenIndex)
+        } else {
+            // If it's mismatch, turn the first card face down
+            // and keep the second card face up.
+            cards[facedUpIndex].isFaceUp = false
+            indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+
+            // If the facedUpIndex/chosenIndex is visited, -1.
+            if (visitedCardIndexes.contains(facedUpIndex)) {
+                score -= 1
+            }
+
+            if (visitedCardIndexes.contains(chosenIndex)) {
+                score -= 1
+            }
+
+            visitedCardIndexes.insert(facedUpIndex)
+            visitedCardIndexes.insert(chosenIndex)
+        }
+    }
+
+    private func canBeChosen(card: CardModel) -> Bool {
+        return !card.isMatched && !card.isFaceUp
     }
 
     private func index(card: CardModel) -> Int {
-        cards.firstIndex(of: card)!
+        return cards.firstIndex(of: card)!
     }
 
     mutating func shuffle() {
         cards.shuffle()
+    }
+
+    func getScore() -> Int {
+        return score
     }
 }

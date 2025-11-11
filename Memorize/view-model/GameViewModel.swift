@@ -17,7 +17,6 @@ class GameViewModel: ObservableObject {
     init() {
         allThemeModels = ThemeLibrary.all
         currentThemeModel = allThemeModels.randomElement()!
-//        currentThemeModel = allThemeModels[0]
         gameModel = GameModel(themeModel: currentThemeModel)
     }
 
@@ -45,10 +44,13 @@ class GameViewModel: ObservableObject {
     func newGame() {
         currentThemeModel = allThemeModels.randomElement()!
         gameModel = GameModel(themeModel: currentThemeModel)
-        print("New game started with theme: \(currentThemeModel.name)")
     }
 
     func choose(card: CardModel) {
         gameModel.choose(card: card)
+    }
+
+    func getScore() -> Int {
+        return gameModel.getScore()
     }
 }
