@@ -54,9 +54,10 @@ struct GameModel {
         if (cards[chosenIndex].content == cards[facedUpIndex].content) {
             cards[chosenIndex].isMatched = true
             cards[facedUpIndex].isMatched = true
+            visitedCardIndexes.insert(facedUpIndex)
+            visitedCardIndexes.insert(chosenIndex)
             indexOfTheOneAndOnlyFaceUpCard = nil
             score += 2
-            visitedCardIndexes.insert(chosenIndex)
         } else {
             // If it's mismatch, turn the first card face down
             // and keep the second card face up.
