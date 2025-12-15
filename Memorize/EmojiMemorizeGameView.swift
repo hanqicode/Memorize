@@ -17,6 +17,7 @@ struct EmojiMemorizeGameView: View {
                 cards
                     .animation(Animation.default, value: viewModel.cards)
             }
+
             Button("Shuffle") {
                 viewModel.shuffle()
             }
