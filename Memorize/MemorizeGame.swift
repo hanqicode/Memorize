@@ -83,7 +83,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
         // To be identifiable.
         let id: String
 
-        var isFaceUp: Bool = false
+        var isFaceUp: Bool = true
         var isMatched: Bool = false
         let content: CardContent
     }

@@ -8,8 +8,12 @@
 import SwiftUI
 import Combine
 
+//private let emojis: [String] = [
+//    "👻", "🎃", "🕷️", "😈", "🙈", "🎶", "🤡", "👹", "💄", "🐝", "🏀", "🏆",
+//]
+
 private let emojis: [String] = [
-    "👻", "🎃", "🕷️", "😈", "🙈", "🎶", "🤡", "👹", "💄", "🐝", "🏀", "🏆",
+    "👻", "🎃"
 ]
 
 private func createCardContent(index: Int) -> String {
@@ -19,7 +23,7 @@ private func createCardContent(index: Int) -> String {
 class EmojiMemorizeGame: ObservableObject {
 
     @Published private var model = MemorizeGame<String>(
-        numberOfPairsOfCards: 6,
+        numberOfPairsOfCards: 2,
         cardContentFactory: createCardContent
     )
 
